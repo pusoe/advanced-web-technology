@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Information</title>
+</head>
+<body>
+    <form id="userForm">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" required><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById("userForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const firstName = document.getElementById("first_name").value;
+            const lastName = document.getElementById("last_name").value;
+            const email = document.getElementById("email").value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!firstName || !lastName || !email || !emailRegex.test(email)) {
+                alert("Please fill in all fields correctly.");
+                return;
+            }
+            const userInfo = {
+                first_name: firstName,
+                last_name: lastName,
+                email: email
+            };
+            const jsonData = JSON.stringify(userInfo);
+            const sendRequest = new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://reqres.in/api/users");
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                xhr.onload = () => {
+                    if (xhr.status === 201) {
+                        resolve(xhr.responseText);
+                    } else {
+                        reject("Error: " + xhr.status);
+                    }
+                };
+
+                xhr.onerror = () => {
+                    reject("Network error");
+                };
+
+                xhr.send(jsonData);
+            });
+            sendRequest
+                .then((response) => {
+                    alert("Success: User information submitted!");
+                })
+                .catch((error) => {
+                    alert("Error: " + error);
+                });
+        });
+    </script>
+</body>
+</html>
