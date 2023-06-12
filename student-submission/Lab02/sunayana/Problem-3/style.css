@@ -1,0 +1,70 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body
+{
+    background-color: pink;
+    color: ghostwhite;
+}
+
+.container
+{
+    background: rgba(255,255,255,0.5);
+    height:400px;
+    width: 500px;
+    
+    margin-left: 35%;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.title
+{
+    color: white;
+    font-size: 2em;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-top: 130px;
+    margin-left: 45%;
+}
+
+.form-container
+{
+    color: white;
+    text-align: center;
+   margin-left: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding-left: .5rem;
+    padding-right: 3rem;
+    
+}
+
+input[type="text"],input[type="email"]
+{
+    display: block;
+    padding: 20px 30px;
+    background-color: pink;
+    color: ghostwhite;
+    border: none;
+    border-radius: 40px;
+    margin: 1rem;
+    height: 2rem;
+    width: 100%;
+  
+}
+button
+{
+    border: none;
+    border-radius: 40px;
+    display: block;
+    margin: .3rem auto;
+    padding: 10px 20px;
+    font-size: 1.grem;
+    font-weight: bold;
+    cursor: pointer;
+    color: pink;
+}
