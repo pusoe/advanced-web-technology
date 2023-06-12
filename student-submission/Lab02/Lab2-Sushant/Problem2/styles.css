@@ -1,0 +1,48 @@
+
+.container{
+    max-width: 960px;
+    margin-right: 340rem;
+    display: grid;
+    place-items: left;
+}
+
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+   
+}
+
+input[type="text"],input[type="email"]{
+    border: 1px solid black;
+    margin-bottom: .4rem;
+    padding: .3rem;
+}
+
+.avatar{
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+    margin: 1rem;
+    border: 2px solid blue;
+    overflow: hidden; 
+    
+}
+.avatar img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+#btn{
+    padding:.5rem;
+    width: fit-content;
+    display: block;
+    margin: 10px auto;
+    border-radius: 5px;
+}
+
+#btn:hover{
+    background-color: aqua;
+}
