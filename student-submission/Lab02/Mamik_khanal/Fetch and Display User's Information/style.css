@@ -1,0 +1,61 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Utilities Class  */
+
+button {
+    cursor: pointer;
+}
+
+body{
+    background-color:rgb(0, 0, 0);
+    color:white;
+}
+
+button{
+    background-color:black ;
+    color:white;
+    display: block;
+    margin: 1em;
+    padding: .5rem 1rem ;
+    border: 4px double white;
+    border-radius: 10px;
+    position: relative;
+    left: 50%;
+    
+}
+
+
+.title{
+    text-align: center;
+    padding: 1rem;
+}
+
+.container{
+    max-width:90%;
+    margin: 1em;
+    border: 10px double white;
+    border-radius: 20px;
+    text-align: center;
+    position: relative;
+    left:5%
+}
+.content{
+    border-radius:40px ;
+    display: inline-block;
+    border: white 5px double;
+    border-radius: 35%;
+    padding: 1rem 0;
+    width: 40%;
+    height:40%;
+    margin: 1rem;
+    text-align: center
+    /* align-items: center; */
+}
+
+.ptext{
+    font-size: medium;
+}
