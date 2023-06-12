@@ -1,0 +1,29 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+button{
+    background-color: rgb(86, 126, 17);
+    display: block;
+    margin: 1rem auto;
+    padding: .5rem 1rem ;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+.title{
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+.container{
+    max-width: 960px;
+    margin: auto;
+}
+.content{
+    border: 1px solid black;
+    padding: 1rem 0;
+    width: 50%;
+    margin: 1rem auto;
+    /* align-items: center; */
+}
