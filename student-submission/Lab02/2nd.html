@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fetch and Display User's Informationin Forms</title>
+</head>
+<body>
+  <h1>User Form</h1>
+  <form id="user-form">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name"><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email"><br><br>
+
+    <label for="avatar">Avatar:</label>
+    <img id="avatar" src="" alt="" /><br /><br><br>
+
+    <button type="submit">Fetch</button>
+  </form>
+
+  <script>
+    function makeRequest(img) {
+      return new Promise(function(resolve, reject) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', img, true);
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            resolve(JSON.parse(xhr.responseText));
+          } else {
+            reject(Error('Request failed. Status: ' + xhr.status));
+          }
+        };
+        xhr.onerror = function() {
+          reject(Error('Network error'));
+        };
+        xhr.send();
+      });
+    }
+    function populateForm(user) {
+      document.getElementById('name').value = user.first_name + ' ' + user.last_name;
+      document.getElementById('email').value = user.email;
+      document.getElementById('avatar').src = user.avatar;
+    }
+    function initiateRequest() {
+      makeRequest('https://reqres.in/api/users/2')
+        .then(function(response) {
+          const user = response.data;
+          populateForm(user);
+        })
+        .catch(function(error) {
+          console.error('Error:', error);
+          alert('Failed to fetch user information. Please try again.');
+        });
+    }
+
+    // Attach event listener to the form submission
+    document.getElementById('user-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Call initiateRequest() to fetch data and populate the form fields
+      initiateRequest();
+    });
+  </script>
+</body>
+</html>
+
