@@ -1,0 +1,18 @@
+.container{
+    text-align: center;
+    justify-content: center;
+}
+.content{
+    background-color: rgb(32, 24, 24);
+    color: white;
+    margin: 2rem auto;
+    width: 19rem;
+    height: 14rem;
+}
+#btn{
+    background-color: rgb(74, 73, 73);
+    color: white;
+    font-size: 18px;
+    border: 2px solid  rgb(74, 73, 73);;
+    border-radius: 20px;
+}
