@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Form Submission Example</title>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("myForm");
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          submitForm();
+        });
+      });
+
+      function submitForm() {
+        const firstNameInput = document.getElementById("firstName");
+        const lastNameInput = document.getElementById("lastName");
+        const emailInput = document.getElementById("email");
+
+        const firstName = firstNameInput.value.trim();
+        const lastName = lastNameInput.value.trim();
+        const email = emailInput.value.trim();
+
+        if (!validateForm(firstName, lastName, email)) {
+          return;
+        }
+
+        const userInfo = {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+        };
+
+        const jsonData = JSON.stringify(userInfo);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://reqres.in/api/users");
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        const promise = new Promise(function (resolve, reject) {
+          xhr.onload = function () {
+            if (xhr.status === 201) {
+              resolve(xhr.responseText);
+            } else {
+              reject(xhr.statusText);
+            }
+          };
+
+          xhr.onerror = function () {
+            reject("Network error");
+          };
+        });
+
+        promise
+          .then(function (response) {
+            alert("Success: " + response);
+            firstNameInput.value = "";
+            lastNameInput.value = "";
+            emailInput.value = "";
+          })
+          .catch(function (error) {
+            alert("Error: " + error);
+          });
+
+        xhr.send(jsonData);
+      }
+
+      function validateForm(firstName, lastName, email) {
+        const nameRegex = /^[a-zA-Z]+$/;
+        const emailRegex = /^\S+@\S+\.\S+$/;
+
+        if (!nameRegex.test(firstName)) {
+          alert("First name is invalid");
+          return false;
+        }
+
+        if (!nameRegex.test(lastName)) {
+          alert("Last name is invalid");
+          return false;
+        }
+
+        if (!emailRegex.test(email)) {
+          alert("Email is invalid");
+          return false;
+        }
+
+        return true;
+      }
+    </script>
+  </head>
+  <body>
+    <form id="myForm">
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" required /><br />
+
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" required /><br />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required /><br />
+
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>

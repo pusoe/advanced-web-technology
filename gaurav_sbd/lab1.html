@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Information</title>
+  </head>
+  <body>
+    <h1>User Information</h1>
+    <div id="userInfo"></div>
+
+    <script>
+      makeRequest("https://jsonplaceholder.typicode.com/users/1")
+        .then(function (response) {
+          var user = JSON.parse(response);
+          displayUserInfo(user);
+        })
+        .catch(function (error) {
+          var userInfoDiv = document.getElementById("userInfo");
+          var errorMessage = document.createElement("p");
+          errorMessage.textContent = "Error: " + error.message;
+          userInfoDiv.appendChild(errorMessage);
+        });
+      function displayUserInfo(user) {
+        var userInfoDiv = document.getElementById("userInfo");
+
+        var nameParagraph = document.createElement("p");
+        nameParagraph.textContent = "Name: " + user.name;
+
+        var emailParagraph = document.createElement("p");
+        emailParagraph.textContent = "Email: " + user.email;
+
+        var cityParagraph = document.createElement("p");
+        cityParagraph.textContent = "City: " + user.address.city;
+
+        userInfoDiv.appendChild(nameParagraph);
+        userInfoDiv.appendChild(emailParagraph);
+        userInfoDiv.appendChild(cityParagraph);
+      }
+      function makeRequest(url) {
+        return new Promise(function (resolve, reject) {
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", url, true);
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              resolve(xhr.response);
+            } else {
+              reject(Error(xhr.statusText));
+            }
+          };
+
+          xhr.send();
+        });
+      }
+    </script>
+  </body>
+</html>
