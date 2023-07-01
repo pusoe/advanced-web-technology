@@ -1,0 +1,48 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 2</title>
+</head>
+<body>
+    Name:<input type="text" id="username"><br>
+    Email:<input type="email" id="useremail"><br>
+    Avatar: <p id="avatar" style="height:130px;width:129px;border-radius:50%;margin:1rem;border:.2px solid black;overflow:hidden;"></p>
+    <button id="fetch_button" onclick="UserDisplay()">Fetch Data</button>
+    <script>
+        
+       function displayUserInfo(img){
+        var avatarElement = document.getElementById("avatar");
+        avatarElement.innerHTML = ""; // Clear previous content
+        avatarElement.appendChild(img);
+       }
+       const myRequest = (url) => {
+        return new Promise((resolve, reject) => {
+            var xhr = new XMLHttpRequest();
+            console.log(xhr);
+            xhr.open("GET", url);
+            xhr.onload = function() {
+                var myObj = JSON.parse(xhr.responseText);
+                document.getElementById("username").value=myObj.data.first_name+' '+myObj.data.last_name;
+                document.getElementById("useremail").value=myObj.data.email;
+                var img = document.createElement("img");
+                img.src = myObj.data.avatar;
+                displayUserInfo(img);
+            }
+            xhr.send();
+        });
+       };
+       const UserDisplay = () => {
+         myRequest("https://reqres.in/api/users/2");
+       }
+    
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
