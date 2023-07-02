@@ -1,0 +1,71 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+   
+    
+    /* CSS */
+    .button-89 {
+    margin: 1rem auto;
+    display: flex;
+	border: solid  4px;
+	padding: 7px 10px;
+	text-align: center;
+    justify-content: center;
+    align-items: center;
+      --b: 3px;   /* border thickness */
+      --s: .45em; /* size of the corner */
+      --color: #373B44;
+      
+      padding: calc(.5em + var(--s)) calc(.9em + var(--s));
+      color: var(--color);
+      --_p: var(--s);
+      background:
+        conic-gradient(from 90deg at var(--b) var(--b),#0000 90deg,var(--color) 0)
+        var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
+      transition: .3s linear, color 0s, background-color 0s;
+      outline: var(--b) solid #0000;
+      outline-offset: .6em;
+      font-size: 16px;
+    
+      border: 0;
+    
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    
+    .button-89:hover,
+    .button-89:focus-visible{
+      --_p: 0px;
+      outline-color: var(--color);
+      outline-offset: .05em;
+    }
+    
+    .button-89:active {
+      background: var(--color);
+      color: #fff;
+    }
+
+
+.title{
+    text-align: center;
+    padding-bottom: 1rem;
+    color: red;
+}
+
+.container{
+    max-width: 960px;
+    margin: auto;
+}
+.content{
+    text-align: center;
+    font-weight: 50;
+    padding: 1rem 0;
+    width: 50%;
+    margin: 1rem auto;
+    font-family: sans-serif;
+    /* align-items: center; */
+}

@@ -1,0 +1,36 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: rgb(122, 255, 173);
+}
+button{
+    background-color: aqua;
+    display: block;
+    margin: 1rem auto;
+    padding: .5rem 1rem ;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+.title{
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+.container{
+    max-width: 960px;
+    margin: auto;
+}
+.content{
+    border: 1px  dotted rgb(96, 20, 146);
+    border-radius: 10px;
+    padding: 1rem 0;
+    width: 50%;
+    margin: 1rem auto;
+    
+    /* align-items: center; */
+}
+.things{
+    font-size: 20px;
+    color:brown;
+}

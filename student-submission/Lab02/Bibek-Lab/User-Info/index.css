@@ -1,0 +1,54 @@
+:root {
+
+}
+
+body {
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Utility Class  */
+
+.buttons {
+    text-align: center;
+}
+
+button {
+    cursor: pointer;
+    background: none;
+    font-size: 1.2rem;
+    border: 1px solid gray;
+    border-radius: 20px;
+    padding: 0.5em 1em;
+    transition: 0.5s;
+}
+
+button:hover {
+    background: lightgray;
+}
+
+button:active {
+    box-shadow: 1px 1px 1px 1px red, 1px 1px 1px 1px red inset;
+}
+
+.container {
+    padding: 1em;
+    gap: 10px;
+    text-align: center;
+    border: 1px solid red;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.each-user {
+    padding: 1em;
+    border-radius: 20px;
+    border: 1px solid gray;
+    flex-basis: 47%;
+}

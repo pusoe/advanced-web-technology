@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch and Display User's Informationin Forms</title>
+</head>
+<body>
+    <h1>User Form</h1>
+  <form id="userForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" value="" disabled><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" value="" disabled><br>
+
+    <label for="avatar">Avatar:</label>
+    <img src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" id="avatar" style="height: 200px; width:200px;" alt="User Avatar">
+
+    <button type="button" onclick="initiateRequest()">Fetch Data</button>
+  </form>
+
+  <!-- javascript section -->
+  <script>
+    function initiateRequest() {
+      getUserInfo()
+        .then(function(user) {
+          populateForm(user);
+        })
+        .catch(function(error) {
+          var form = document.getElementById('userForm');
+          form.innerHTML = `<p>Error: ${error}</p>`;
+        });
+    }
+    function getUserInfo() {
+      return new Promise(function(resolve, reject) {
+        var req = new XMLHttpRequest();
+        req.open('GET', 'https://reqres.in/api/users/2', true);
+        req.onload = function() {
+          if (req.status === 200) {
+            resolve(JSON.parse(req.responseText).data);
+            
+          } else {
+            reject('Error: ' + req.status);
+          }
+        };
+        req.onerror = function() {
+          reject('Network error');
+        };
+        req.send();
+      });
+    }
+    function populateForm(user) {
+       document.getElementById('name').value = user.first_name + " " + user.last_name;
+       document.getElementById('email').value = user.email;
+       document.getElementById('avatar').src =user.avatar;
+       
+    }
+  </script>
+
+</body>
+</html>

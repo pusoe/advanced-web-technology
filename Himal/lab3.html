@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission withAPI</title>
+</head>
+<body>
+    <h1>User Form</h1>
+  <form id="userForm" novalidate>
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" required><br>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" required><br>
+
+    <button type="submit" id ="btn">Submit</button>
+  </form>
+
+  <!-- javascript <section></section> -->
+
+  <script>
+document.getElementById('btn').addEventListener('click', function(event) {
+  event.preventDefault();
+
+  var firstName = document.getElementById('firstName').value;
+  var lastName = document.getElementById('lastName').value;
+  var email = document.getElementById('email').value;
+  // alert(firstName);
+  const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+if( !regex.test(email))
+{
+  alert("invalid email address");
+  return false;
+}
+   var userInfo = {
+    first_name: firstName,
+    last_name: lastName,
+    email: email
+  };
+  var jsonUserInfo = JSON.stringify(userInfo);
+  sendUserInfo(jsonUserInfo)
+    .then(function(response) {
+      if (response.status === 201) {
+        alert(' Congratulation ,User information submitted successfully!');
+      } else {
+        alert('Sorry cannot submit user information . Please try again.');
+      }
+    })
+    .catch(function(error) {
+      alert('An error occurred. Please try again later.');
+    });
+  
+  
+ });
+
+function sendUserInfo(jsonUserInfo) {
+  return new Promise(function(resolve, reject) {
+    var req = new XMLHttpRequest();
+    req.open('POST', 'https://reqres.in/api/users', true);
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.onload = function() {
+      resolve(req);
+    };
+    req.onerror = function() {
+      reject(req);
+    };
+    req.send(jsonUserInfo);
+  });
+}
+
+
+  </script>
+</body>
+</html>
