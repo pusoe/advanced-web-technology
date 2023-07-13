@@ -1,0 +1,203 @@
+
+This code follows the MVC (Model-View-Controller) architecture in the following way:
+
+Model:
+
+The model component is responsible for interacting with the SQLite database.
+The code includes SQL queries to create the 'tasks' and 'categories' tables, representing the data model.
+The model is used to perform CRUD (Create, Read, Update, Delete) operations on the database tables.
+The data retrieval and manipulation logic is encapsulated within the model, ensuring separation of concerns.
+
+View:
+
+In this code, the view component is not explicitly defined as it is not required for an API.
+Instead of rendering HTML templates or views, the API returns JSON responses.
+The JSON responses serve as the representation of data for the client consuming the API.
+
+Controller:
+
+The controller acts as the intermediary between the model and the view.
+The code defines various Express routes and corresponding route handlers that serve as the controllers.
+Each route handler receives the incoming HTTP requests, processes them, interacts with the model to retrieve or modify data, and returns appropriate JSON responses.
+The controllers encapsulate the application logic and handle the flow of data between the model and the client.
+
+------------------------------------------------------------------------------------------------
+
+
+(FOR TASKS)
+Required Dependencies:
+
+Express: A web application framework for Node.js.
+SQLite3: A Node.js driver for SQLite, a lightweight database.
+Create an Express application and initialize a new SQLite database named 'tasks.db'.
+
+Create a database table for tasks:
+
+The 'tasks' table has fields such as id, title, description, and status.
+The table is created using an SQL query with a condition to create it only if it doesn't already exist.
+Configure the Express application to parse JSON request bodies.
+
+Define API endpoints for tasks:
+
+POST /tasks: Create a new task.
+
+Performs custom validation to check if the provided task id already exists.
+Validates and inserts the task data into the 'tasks' table.
+Returns a success message along with the newly created task's ID.
+GET /tasks: Retrieve a list of all tasks.
+
+Retrieves all tasks from the 'tasks' table, transforming the title to uppercase.
+Returns an array of tasks.
+GET /tasks/:id: Retrieve a single task by its ID.
+
+Retrieves a task from the 'tasks' table based on the provided task ID.
+Returns the task details.
+PUT /tasks/:id: Update a task by its ID.
+
+Performs custom validation to check if the provided task ID conflicts with an existing task.
+Validates and updates the task data in the 'tasks' table.
+Returns a success message.
+DELETE /tasks/:id: Delete a task by its ID.
+
+Deletes a task from the 'tasks' table based on the provided task ID.
+Returns a success message.
+Start the Express server on port 3000.
+
+
+------------------------------------------------------------------------------------------------
+
+
+(FOR CATEGORIES)
+
+This code implements a simple API for managing tasks and categories using Express.js and SQLite as the database. Here's a short documentation of the code:
+
+Required Dependencies:
+
+Express: A web application framework for Node.js.
+SQLite3: A Node.js driver for SQLite, a lightweight database.
+Create an Express application and initialize a new SQLite database named 'tasks.db'.
+
+Create two database tables: 'tasks' and 'categories' using SQL queries. These tables represent tasks and categories with their respective fields.
+
+Configure the Express application to parse JSON request bodies.
+
+Define API endpoints:
+
+POST /tasks:
+
+Creates a new task by inserting the task details into the 'tasks' table.
+Performs validation checks before inserting the data.
+Returns a success message along with the newly created task's ID.
+GET /tasks:
+
+Retrieves a list of all tasks.
+Accepts an optional query parameter 'categoryId' to filter tasks by category.
+Returns an array of tasks.
+GET /tasks/:id:
+
+Retrieves a single task by its ID.
+Returns the task details.
+PUT /tasks/:id:
+
+Updates a task by its ID.
+Performs validation checks before updating the data.
+Returns a success message.
+DELETE /tasks/:id:
+
+Deletes a task by its ID.
+Returns a success message.
+POST /categories:
+
+Creates a new category by inserting the category details into the 'categories' table.
+Performs validation checks before inserting the data.
+Returns a success message along with the newly created category's ID.
+GET /categories:
+
+Retrieves a list of all categories.
+Returns an array of categories.
+GET /categories/:id:
+
+Retrieves a single category by its ID.
+Returns the category details along with associated tasks.
+PUT /categories/:id:
+
+Updates a category by its ID.
+Performs validation checks before updating the data.
+Returns a success message.
+DELETE /categories/:id:
+
+Deletes a category by its ID.
+Returns a success message.
+Start the Express server on port 3001.
+
+
+
+------------------------------------------------------------------------------------------------
+
+(FOR FILE)
+
+
+Required Dependencies:
+
+Express: A web application framework for Node.js.
+Multer: A middleware for handling file uploads.
+Path: A built-in Node.js module for working with file and directory paths.
+SQLite3: A Node.js driver for SQLite, a lightweight database.
+Create an Express application and initialize a new SQLite database named 'tasks.db'.
+
+Create two database tables:
+
+'tasks' table stores task information with fields like id, title, description, and status.
+'attachments' table stores attachment details related to tasks with fields like id, task_id, filename, and filepath.
+The tables are created using SQL queries with conditions to create them only if they don't already exist.
+Set up Multer storage for file uploads:
+
+Multer is configured with a destination and filename settings.
+Uploaded files are stored in the 'uploads/' directory with a unique filename based on the current timestamp.
+Define API endpoints for file uploads and retrieval:
+
+POST /tasks/:id/attachments: Upload a file as an attachment to a task.
+
+Uses the Multer middleware to handle file uploads.
+Saves the file details (originalname, filename, and path) into the 'attachments' table.
+Returns a success message along with the newly created attachment's ID.
+GET /tasks/:id/attachments/:attachmentId: Retrieve an attachment associated with a task.
+
+Retrieves the attachment details from the 'attachments' table based on the provided task ID and attachment ID.
+Downloads the file by sending it as a response attachment.
+Start the Express server on port 3002.
+
+
+----------------------------------------------------------------
+
+Question 1: Tasks API
+
+Create a new task: POST http://localhost:3001/tasks
+Retrieve a list of all tasks: GET http://localhost:3000/tasks
+Retrieve a single task by its id: GET http://localhost:3000/tasks/{taskId}
+Update a task by its id: PUT http://localhost:3000/tasks/{taskId}
+Delete a task by its id: DELETE http://localhost:3000/tasks/{taskId}
+Replace {taskId} with the actual ID of the task you want to interact with.
+
+
+----------------------------------------------------------------
+
+
+Question 2: Task Categories API
+
+Create a new category: POST http://localhost:3001/categories
+Retrieve a list of all categories: GET http://localhost:3001/categories
+Retrieve a single category by its id: GET http://localhost:3001/categories/{categoryId}
+Update a category by its id: PUT http://localhost:3001/categories/{categoryId}
+Delete a category by its id: DELETE http://localhost:3001/categories/{categoryId}
+Retrieve tasks filtered by category: GET http://localhost:3001/tasks?categoryId={categoryId}
+Replace {categoryId} with the actual ID of the category you want to interact with.
+
+
+----------------------------------------------------------------
+
+
+Question 3: File Uploads/retrive using API
+
+Upload a file attachment to a task: POST http://localhost:3002/tasks/{taskId}/attachments
+Retrieve and download a specific attachment: GET http://localhost:3002/tasks/{taskId}/attachments/{attachmentId}
