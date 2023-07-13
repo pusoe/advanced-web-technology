@@ -1,0 +1,41 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+button{
+    margin: 1rem auto;
+    display: flex;
+	border: solid  4px;
+	padding: 7px 10px;
+	text-align: center;
+	border-radius: 10px;
+	font-size: medium;
+	font-family:"Ubuntu",Verdana, Geneva, Tahoma, sans-serif;
+	border-color: rgb(6, 6, 6);
+	color: rgb(0, 0, 0);
+	font-weight: bold;
+    background-color: rgb(3, 255, 255);
+}
+button:hover{
+    background-color:rgb(193, 41, 41);
+	color: rgb(3, 255, 255);
+	font-weight: bold;
+}
+.title{
+    text-align: center;
+    padding-bottom: 1rem;
+    color: rgb(0, 0, 0);;
+}
+
+.container{
+    max-width: 960px;
+    margin: auto;
+}
+.content{
+    border: 1px solid black;
+    padding: 1rem 0;
+    width: 50%;
+    margin: 1rem auto;
+    /* align-items: center; */
+}
