@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Asmit Dhakal</title>
+</head>
+<style>
+    .container {
+      display: flex;
+      
+      justify-content:left;
+      height: 100vh;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      justify-content:left;
+      padding: 20px;
+      background-color: #fffbfb;
+      border-radius: 5px;
+      
+    }
+
+    label {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #071591;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form id="userForm">
+      <label for="fn">First Name:</label>
+      <input type="text" id="fn" required>
+
+      <label for="ln">Last Name:</label>
+      <input type="text" id="ln" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  <script>
+    const form = document.getElementById('userForm');
+    form.addEventListener('submit', handleFormSubmit);
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      if (!form.checkValidity()) {
+       
+        return;
+      }
+
+      const fn = document.getElementById('fn').value;
+      const ln = document.getElementById('ln').value;
+      const email = document.getElementById('email').value;
+     
+      function validateName(name) {
+      const regex = /^[A-Za-z\s]+$/;
+      return regex.test(name);
+    }
+
+    function validateEmail(email) {
+      const regex = /^\S+@\S+\.\S+$/;
+      return regex.test(email);
+    }
+      if (!validateName(fn)) {
+        alert('Invalid first name.');
+        return;
+      }
+
+      if (!validateName(ln)) {
+        alert('Invalid last name .');
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        alert('Invalid email address.');
+        return;
+      }
+
+      const user = {
+        first_name: fn,
+        last_name: ln,
+        email: email
+      };
+
+      const jsonUser = JSON.stringify(user);
+
+      sendUserData(jsonUser)
+        .then(response => {
+          if (response.status === 201) {
+            alert('User information posted!');
+          } else {
+            alert('Error: User information can"t posted');
+          }
+        })
+        .catch(error => {
+          alert('An error occurred while posting the form.');
+          console.error(error);
+        });
+    }
+    
+    
+
+    function sendUserData(userJson) {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://reqres.in/api/users');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function () {
+          if (xhr.status === 201) {
+            resolve(xhr);
+          } else {
+            reject(xhr);
+          }
+        };
+
+        xhr.onerror = function () {
+          reject(xhr);
+        };
+
+        xhr.send(userJson);
+      });
+    }
+  </script>
+</body>
+</html>

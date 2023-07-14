@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Information</title>
+    <style>
+      .form-container {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .form-container input,
+      .form-container button {
+        display: block;
+        margin-bottom: 3px;
+      }
+      .form-container img {
+        max-width: 50px;
+        margin-bottom: 3px;
+      }
+      .error-message {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <h1>User Forms</h1>
+      <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" disabled />
+        <label for="email">Email:</label>
+        <input type="email" id="email" disabled />
+        <label for="avatar">Avatar:</label>
+        <img
+          id="avatar"
+          src=""
+          alt="Avatar"
+          style="max-width: 150px"
+        /><br /><br />
+        <button type="button" onclick="initiateRequest()">Fetch data</button>
+      </form>
+    </div>
+
+    <script>
+      function populateForm(user) {
+        document.getElementById("name").value =
+          user.first_name + " " + user.last_name;
+        document.getElementById("email").value = user.email;
+        document.getElementById("avatar").src = user.avatar;
+      }
+
+      function getUserData() {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open("GET", "https://reqres.in/api/users/2");
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              resolve(JSON.parse(xhr.responseText).data);
+            } else {
+              reject("Failed to fetch user data.");
+            }
+          };
+          xhr.onerror = function () {
+            reject("Failed to make the request.");
+          };
+          xhr.send();
+        });
+      }
+
+      function initiateRequest() {
+        getUserData()
+          .then((user) => populateForm(user))
+          .catch((error) => {
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("avatar").src = "";
+            alert(`Error: ${error}`);
+          });
+      }
+    </script>
+  </body>
+</html>

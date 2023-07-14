@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Information</title>
+  <style>
+    #loading-spinner {
+      display: none;
+      margin: 20px auto;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      color: red;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .user-container {
+      margin: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid #f3f3f3;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      text-align: center;
+    }
+
+    .user-name {
+      font-size: 24px;
+      color: #333;
+    }
+
+    .user-email {
+      font-size: 18px;
+      color: #666;
+    }
+
+    .user-city {
+      font-size: 18px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <h1>User Information</h1>
+  <button id="fetch-btn">Fetch User Information</button>
+  <div id="loading-spinner"></div>
+  <div id="user-info"></div>
+
+  <script>
+    function showLoadingSpinner() {
+      var spinner = document.getElementById('loading-spinner');
+      spinner.style.display = 'block';
+    }
+
+    function hideLoadingSpinner() {
+      var spinner = document.getElementById('loading-spinner');
+      spinner.style.display = 'none';
+    }
+
+    function fetchUserInformation() {
+      return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://jsonplaceholder.typicode.com/users', true);
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            resolve(JSON.parse(xhr.responseText));
+          } else {
+            reject(Error(xhr.statusText));
+          }
+        };
+        xhr.onerror = function() {
+          reject(Error('Network Error'));
+        };
+        xhr.send();
+      });
+    }
+
+    function displayUserInformation(users) {
+      var userInfoDiv = document.getElementById('user-info');
+      var userInfoHTML = '';
+      users.forEach(function(user) {
+        userInfoHTML += `
+          <div class="user-container">
+            <p class="user-name">${user.name}</p>
+            <p class="user-email">${user.email}</p>
+            <p class="user-city">${user.address.city}</p>
+            <p class="adorable-message">You're absolutely paw-some!</p>
+          </div>
+        `;
+      });
+      userInfoDiv.innerHTML = userInfoHTML;
+    }
+
+    function displayErrorMessage(message) {
+      var userInfoDiv = document.getElementById('user-info');
+      userInfoDiv.innerHTML = `<p class="error-message">${message}</p>`;
+    }
+
+    var fetchButton = document.getElementById('fetch-btn');
+    fetchButton.addEventListener('click', function() {
+      showLoadingSpinner();
+      fetchUserInformation()
+        .then(function(users) {
+          hideLoadingSpinner();
+          displayUserInformation(users);
+        })
+        .catch(function(error) {
+          hideLoadingSpinner();
+          displayErrorMessage('Error occurred while fetching user information.');
+        });
+    });
+  </script>
+</body>
+</html>
