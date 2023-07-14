@@ -1,0 +1,263 @@
+urls.py
+
+ from django.urls import path
+from .views import Taskapi,Categoryapi,Task_Categoryapi
+
+
+urlpatterns=[
+    path('task/',Taskapi.as_view()),
+    path('task/<int:pk>/',Taskapi.as_view()),
+    path('category/',Categoryapi.as_view()),
+    path('category/<int:pk>/',Categoryapi.as_view()),
+    path('task/category/<int:pk>/',Task_Categoryapi.as_view()),
+    path('task/category/',Task_Categoryapi.as_view()),
+]
+        
+
+models.py
+
+from django.db import models
+
+# Create your models here.
+
+
+class Task_category(models.Model):
+    id=models.IntegerField(primary_key=True)
+    name=models.CharField(max_length=100)
+
+class Task(models.Model):
+    id = models.IntegerField(primary_key=True)
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length= 200)
+    status = models.CharField(max_length= 20)
+    category_id=models.ForeignKey("Task_category" , on_delete=models.CASCADE)
+    # attachments=models.FileField(upload_to='attachments/',default='attachments/file.pdf')
+    
+serializer.py
+
+# code for serializers of the model task
+
+from rest_framework import serializers
+from .models import Task,Task_category
+
+class TaskSerializer(serializers.ModelSerializer):
+    # attachments =serializers.FileField(max_length=None,use_url=True)
+
+    class Meta:
+        model = Task
+        fields = '__all__'
+
+
+    def update(self, instance, validated_data):
+        id=validated_data.get('id')
+        
+        #     print('serializers called')
+        instance.id=validated_data.get('id',instance.id)
+        instance.title=validated_data.get('title',instance.title)
+        instance.description=validated_data.get("description",instance.description)
+        instance.status=validated_data.get('status',instance.status)
+        # print(instance)
+        instance.save()
+        return instance
+
+    def validation(self,data):
+        task_id=data.get("id")
+        if type(task_id)==int:
+            return True
+        else:
+           error_msg='Integers data type is only accepted please enter valid data type'
+           raise serializers.ValidationError(error_msg) 
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task_category
+        fields = '__all__'
+
+
+    def validation(self,data):
+        cat_id=data.get("id")
+        # print("validation callled")
+        if type(cat_id)==int:
+            return True
+        else:
+           error_msg='Integers data type is only accepted please enter valid data type'
+           raise serializers.ValidationError(error_msg) 
+
+
+views.py
+
+from django.shortcuts import render
+from .models import Task,Task_category
+
+# Create your views here.
+from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import TaskSerializer,CategorySerializer
+
+# Create your views here.
+
+class Taskapi(APIView):
+    def get(self,request,pk=None):
+        if pk is not None:
+            try:
+                resource=Task.objects.get(pk=pk)
+                serializer=TaskSerializer(resource)
+                return Response(serializer.data)
+            except Task.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            # print("Running")
+            resource=Task.objects.all()
+            # print(resource)
+            serializer=TaskSerializer(resource ,many=True)
+            return Response(serializer.data)
+            
+    def post(self,request):
+        
+        id=request.data.get('id')
+        serializer=TaskSerializer(data=request.data)
+        if serializer.validation(data=request.data):
+         if(Task.objects.filter(id=id).exists()):
+            error_message="data with this id is already exist"
+            return Response({"msg":error_message})
+         else:
+
+        # print(id)
+                if serializer.is_valid():
+                    serializer.save()
+                    msg='posted successfully'
+                    return Response({'msg':msg},status=status.HTTP_201_CREATED)
+
+                else:
+                    # error_message='unable to post data'
+                    return Response( status=status.HTTP_400_BAD_REQUEST)
+
+
+    def put(self, request ,pk=None):
+        try:
+            resource=Task.objects.get(id=pk)
+        except Task.DoesNotExist:
+            error_message="Requested id is not available"
+            return Response({'msg':error_message},status=status.HTTP_404_NOT_FOUND)
+        serializer=TaskSerializer(instance=resource,data=request.data)
+        # serializer.demo()
+        if serializer.validation(data=request.data):
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+        else:  
+            msg='no changes is applied'
+            return Response({'msg':msg},status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def delete(self, request, pk=None):
+        try:
+            resource=Task.objects.get(pk=pk)
+        except Task.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        resource.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class Categoryapi(APIView):
+    def get(self,request,pk=None):
+        if pk is not None:
+            try:
+                resource=Task_category.objects.get(pk=pk)
+                serializer=CategorySerializer(resource)
+                return Response(serializer.data)
+            except Task_category.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            # print("Running")
+            resource=Task_category.objects.all()
+            # print(resource)
+            serializer=CategorySerializer(resource ,many=True)
+            return Response(serializer.data)
+    def post(self,request):
+        
+        id=request.data.get('id')
+        serializer=CategorySerializer(data=request.data)
+        if serializer.validation(data=request.data):
+        
+          if(Task_category.objects.filter(id=id).exists()):
+            error_message="data with this id is already exist"
+            return Response({"msg":error_message})
+          else:
+        # print(id)
+                if serializer.is_valid():
+                    serializer.save()
+                    msg='posted successfully'
+                    return Response({'msg':msg},status=status.HTTP_201_CREATED)
+
+                else:
+                    # error_message='unable to post data'
+                    return Response( status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request ,pk=None):
+        try:
+            resource=Task_category.objects.get(id=pk)
+        except Task.DoesNotExist:
+            error_message="Requested id is not available"
+            return Response({'msg':error_message},status=status.HTTP_404_NOT_FOUND)
+        serializer=CategorySerializer(instance=resource,data=request.data)
+        # serializer.demo()
+        if serializer.validation(data=request.data):
+            if serializer.is_valid():
+                serializer.save()
+                msg='Data updated succesfully'
+                return Response({'msg':msg},status=status.HTTP_200_OK)
+        else:  
+            msg='no changes is applied'
+            return Response({'msg':msg},status=status.HTTP_400_BAD_REQUEST)
+        
+    def delete(self, request, pk=None):
+        try:
+            resource=Task_category.objects.get(pk=pk)
+        except Task.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        resource.delete()
+        message="Category deleted succesfully"
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        # class for both task and category
+class Task_Categoryapi(APIView):
+    def get(self,request,pk=None):
+        if pk is not None:
+            try:
+                resource=Task.objects.filter(category_id=pk)
+                serializer=TaskSerializer(resource,many=True)
+                serialized_data =serializer.data
+                # print(serialized_data)
+                processed_data=[]
+                for task_data in serialized_data:
+                   task_id = task_data['id']
+                   task_title = task_data['title']
+                   task_description = task_data['description']
+                   task_category_id=task_data['category_id']
+                   task_status=task_data['status']
+
+                #    finding the category name based on the id
+                   category=Task_category.objects.get(id=task_category_id)
+               
+                # creating a dictionary with the processed data
+                   processed_task = {
+                    'id': task_id,
+                    'Title': task_title.upper(),  # Convert the name to uppercase
+                    'Description':task_description,
+                    'status':task_status,
+                    'Category':category.name  #passing the category name to the corresponding id
+                   }
+                #    print(processed_task)
+
+                   processed_data.append(processed_task)
+               
+                return Response(processed_data,)
+            except Task.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            # print("Running")
+            resource=Task.objects.all()
+            # print(resource)
+            serializer=TaskSerializer(resource ,many=True)
+            return Response(serializer.data)
+

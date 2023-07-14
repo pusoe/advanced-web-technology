@@ -1,0 +1,11 @@
+This lab is done by using django.
+Dependencies files are not uploaded here due to high number of files all files with dependencies are uploaded in the teams.
+Three different task are done seperately.
+Outputs screenshots of each individual tasks are in respective outputs screenshots folder.
+Models are in the file called models.py
+Urls of tasks are in the urls.py
+Urls maps the different class in the views.py file.
+Input data validation is in the serializers.py file.
+Data type of id must be integer and length of the description must be greater than 10 are used as custom input data validation criteria.
+
+ 
