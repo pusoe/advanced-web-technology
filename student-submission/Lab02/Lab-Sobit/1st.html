@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Information</title>
+</head>
+<body>
+  <h1>User Information</h1>
+  <div id="user-info"></div>
+
+  <script>
+    function makeRequest(url) {
+      return new Promise(function(resolve, reject) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            resolve(JSON.parse(xhr.responseText));
+          } else {
+            reject(Error('Request failed. Status: ' + xhr.status));
+          }
+        };
+        xhr.onerror = function() {
+          reject(Error('Network error'));
+        };
+        xhr.send();
+      });
+    }
+    function displayUserInfo(user) {
+      const userInfoDiv = document.getElementById('user-info');
+      userInfoDiv.innerHTML = `
+        <p><strong>Name:</strong> ${user.name}</p>
+        <p><strong>Email:</strong> ${user.email}</p>
+        <p><strong>City:</strong> ${user.address.city}</p>
+      `;
+    }
+    makeRequest('https://jsonplaceholder.typicode.com/users/1')
+      .then(function(user) {
+        displayUserInfo(user);
+      })
+      .catch(function(error) {
+        const userInfoDiv = document.getElementById('user-info');
+        userInfoDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+      });
+  </script>
+</body>
+</html>
+

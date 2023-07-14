@@ -1,0 +1,38 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+button{
+    border:solid 1px;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: medium;
+    font-family:"Ubuntu",Verdana, Geneva, Tahoma, sans-serif;
+    border-color: black;
+    background-color: gold;
+    font-weight: bold;
+    color: white;
+}
+button:hover{
+    background-color:white;
+    color: #060606;
+    font-weight: bold;
+        
+    }
+.title{
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+.container{
+    max-width: 960px;
+    margin: auto;
+}
+.content{
+    border: 1px solid black;
+    padding: 1rem 0;
+    width: 50%;
+    margin: 1rem auto;
+    /* align-items: center; */
+}
